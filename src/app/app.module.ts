@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { StoreModule } from '@ngrx/store';
@@ -12,6 +13,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { environment } from '../environments/environment';
 import { reducers, metaReducers, AppEffects } from './ngrx';
+import { SERVICES } from './services';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -20,6 +22,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot([]),
 
     StoreModule.forRoot(reducers, { metaReducers }),
@@ -32,7 +35,7 @@ import { AppComponent } from './app.component';
     }),
     EffectsModule.forRoot([AppEffects]),
   ],
-  providers: [],
+  providers: [...SERVICES],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

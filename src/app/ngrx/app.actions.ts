@@ -1,12 +1,22 @@
 import { Action } from '@ngrx/store';
 
+import { VehicleLocation } from '../models';
+
 export enum Types {
-  TEST = 'Test action'
+  GET_VEHICLES_LOCATION =         '[App] Get vehicles location',
+  GET_VEHICLES_LOCATION_SUCCESS = '[App] Get Vehicles location success'
 }
 
-export class TestAction implements Action {
-  readonly type = Types.TEST;
+export class GetVehiclesLocation implements Action {
+  readonly type = Types.GET_VEHICLES_LOCATION;
+}
+
+export class GetVehiclesLocationSuccess implements Action {
+  readonly type = Types.GET_VEHICLES_LOCATION_SUCCESS;
+
+  constructor(public vehicles: VehicleLocation[]) { }
 }
 
 export type Actions
-  = TestAction;
+  = GetVehiclesLocation
+  | GetVehiclesLocationSuccess;

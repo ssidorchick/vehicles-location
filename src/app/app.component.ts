@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 
-import { State, actions } from './ngrx';
+import { State, actions, selectors } from './ngrx';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +11,14 @@ import { State, actions } from './ngrx';
 })
 export class AppComponent implements OnInit {
   title = 'app';
+  vehicleLocations$: Observable<any>;
 
   constructor(private store: Store<State>) { }
 
   ngOnInit() {
-    this.store.dispatch(new actions.TestAction());
+    this.vehicleLocations$ = this.store.select(selectors.getVehicleLocations);
+    this.vehicleLocations$.subscribe(r => console.log(r));
+
+    this.store.dispatch(new actions.GetVehiclesLocation());
   }
 }
