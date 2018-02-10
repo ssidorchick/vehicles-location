@@ -14,12 +14,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { reducers, metaReducers, AppEffects } from './ngrx';
 import { SERVICES } from './services';
+import { COMPONENTS } from './components';
 import { AppComponent } from './app.component';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -36,6 +34,10 @@ import { AppComponent } from './app.component';
     EffectsModule.forRoot([AppEffects]),
   ],
   providers: [...SERVICES],
+  declarations: [
+    ...COMPONENTS,
+    AppComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,1 +1,7 @@
-<div>Hello world</div>
+<app-google-map
+  [zoom]="mapZoom"
+  [lat]="mapLat"
+  [lng]="mapLng"
+  [layerUrls]="routeLayerUrls$ | async"
+  [items]="vehicleLocations$ | async">
+</app-google-map>

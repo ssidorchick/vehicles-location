@@ -1,0 +1,25 @@
+:host {
+  display: block;
+
+  #map {
+    height: 100vh;
+  }
+
+  /deep/ .vehicles {
+    position: absolute;
+
+    svg {
+      position: absolute;
+      width: 60px;
+      height: 20px;
+      padding-right: 100px;
+      font: 10px sans-serif;
+    }
+
+    circle {
+      fill: brown;
+      stroke: black;
+      stroke-width: 1.5px;
+    }
+  }
+}
