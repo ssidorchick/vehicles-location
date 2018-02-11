@@ -1,9 +1,9 @@
-import { VehiclesLocationService } from './vehicles-location.service';
+import { VehiclesService } from './vehicles.service';
 
 export const SERVICES = [
-  VehiclesLocationService
+  VehiclesService
 ];
 
 export {
-  VehiclesLocationService,
+  VehiclesService,
 };

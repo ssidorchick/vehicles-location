@@ -3,23 +3,25 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 
-import { VehicleLocation } from '../models';
+import { Vehicle } from '../models';
 
 @Injectable()
-export class VehiclesLocationService {
+export class VehiclesService {
   private readonly baseUrl = 'http://webservices.nextbus.com/service/publicJSONFeed';
 
   constructor(private http: HttpClient) { }
 
-  get(): Observable<VehicleLocation[]> {
+  get(): Observable<Vehicle[]> {
     const timestamp = +new Date() - 60000;
     return this.http.get<any>(`${this.baseUrl}?command=vehicleLocations&a=sf-muni&r=N&t=${timestamp}`).pipe(
       map(response => {
         const {vehicle} = response;
         return vehicle.map(item => ({
           id: item.id,
-          lat: +item.lat,
-          lng: +item.lon,
+          location: {
+            lat: +item.lat,
+            lng: +item.lon,
+          },
         }));
       })
     );

@@ -1,6 +1,6 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 
-import { VehicleLocation } from '../models';
+import { Vehicle } from '../models';
 import { State } from './app.reducers';
 
 export const getAppState = createFeatureSelector<State>('app');

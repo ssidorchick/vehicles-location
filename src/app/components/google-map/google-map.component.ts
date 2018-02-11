@@ -59,33 +59,49 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     }
 
     const projection = this.mapOverlay.getProjection();
+    const radius = 4.5;
+    const textXOffset = 7;
+    const textSize = '.31em';
     const padding = 10;
 
-    const marker = this.mapItemsLayer.selectAll('svg')
-      .data(d3.entries(this.items))
-      .each(transform) // update existing markers
-    .enter().append('svg')
-      .each(transform)
-      .attr('class', 'marker');
-
-    marker.append('circle')
-      .attr('r', 4.5)
-      .attr('cx', padding)
-      .attr('cy', padding);
-
-    marker.append('text')
-      .attr('x', padding + 7)
-      .attr('y', padding)
-      .attr('dy', '.31em')
-      .text(d => d.value.id);
-
-    function transform(d) {
-      // console.log(d.value);
-      d = new google.maps.LatLng(d.value.lat, d.value.lng);
+    const transform = (animate = false) => function transform(d) {
+      const {location} = d;
+      d = new google.maps.LatLng(location.lat, location.lng);
       d = projection.fromLatLngToDivPixel(d);
-      return d3.select(this)
+      let selection: any = d3.select(this);
+      if (animate) {
+        selection = selection
+          .transition()
+          .duration(500)
+      }
+      selection
         .style('left', (d.x - padding) + 'px')
         .style('top', (d.y - padding) + 'px');
     }
+
+    const marker = this.mapItemsLayer.selectAll('svg')
+      .data(this.items, item => item.id);
+
+    marker.exit().remove();
+
+    const markerEnter = marker.enter()
+      .append('svg')
+      .attr('class', 'marker');
+
+    markerEnter.append('circle')
+      .attr('r', radius)
+      .attr('cx', padding)
+      .attr('cy', padding);
+
+    markerEnter.append('text')
+      .attr('x', padding + textXOffset)
+      .attr('y', padding)
+      .attr('dy', textSize)
+      .text(d => d.id);
+
+    marker
+      .each(transform(true));
+
+    markerEnter.each(transform());
   }
 }

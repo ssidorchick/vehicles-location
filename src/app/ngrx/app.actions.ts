@@ -1,22 +1,32 @@
 import { Action } from '@ngrx/store';
 
-import { VehicleLocation } from '../models';
+import { Vehicle } from '../models';
 
 export enum Types {
-  GET_VEHICLES_LOCATION =         '[App] Get vehicles location',
-  GET_VEHICLES_LOCATION_SUCCESS = '[App] Get Vehicles location success'
+  START_VEHICLES_AUTOUPDATE = '[App] Start vehicles autoupdate',
+  STOP_VEHICLES_AUTOUPDATE =  '[App] Stop vehicles autoupdate',
+  GET_VEHICLES =              '[App] Get vehicles location',
+  GET_VEHICLES_SUCCESS =      '[App] Get Vehicles location success'
 }
 
-export class GetVehiclesLocation implements Action {
-  readonly type = Types.GET_VEHICLES_LOCATION;
+export class StartVehiclesAutoupdate implements Action {
+  readonly type = Types.START_VEHICLES_AUTOUPDATE;
 }
 
-export class GetVehiclesLocationSuccess implements Action {
-  readonly type = Types.GET_VEHICLES_LOCATION_SUCCESS;
+export class StopVehiclesAutoupdate implements Action {
+  readonly type = Types.STOP_VEHICLES_AUTOUPDATE;
+}
 
-  constructor(public vehicles: VehicleLocation[]) { }
+export class GetVehicles implements Action {
+  readonly type = Types.GET_VEHICLES;
+}
+
+export class GetVehiclesSuccess implements Action {
+  readonly type = Types.GET_VEHICLES_SUCCESS;
+
+  constructor(public vehicles: Vehicle[]) { }
 }
 
 export type Actions
-  = GetVehiclesLocation
-  | GetVehiclesLocationSuccess;
+  = GetVehicles
+  | GetVehiclesSuccess;
