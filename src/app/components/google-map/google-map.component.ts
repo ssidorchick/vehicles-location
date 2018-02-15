@@ -9,7 +9,7 @@ declare var google: any;
 @Component({
   selector: 'app-google-map',
   templateUrl: './google-map.component.html',
-  styleUrls: ['./google-map.component.scss']
+  styleUrls: ['./google-map.component.scss'],
 })
 export class GoogleMapComponent implements OnInit, OnChanges {
   @Input() zoom: number;
@@ -29,7 +29,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
       zoom: this.zoom,
-      center: new google.maps.LatLng(this.lat, this.lng)
+      center: new google.maps.LatLng(this.lat, this.lng),
     });
 
     this.layerUrls.map(url => this.map.data.loadGeoJson(url));
@@ -75,12 +75,12 @@ export class GoogleMapComponent implements OnInit, OnChanges {
       if (transition) {
         selection = selection
           .transition()
-          .duration(500)
+          .duration(500);
       }
       selection
         .style('left', (d.x - padding) + 'px')
         .style('top', (d.y - padding) + 'px');
-    }
+    };
 
     const marker: d3.Selection<SVGGElement, Vehicle, SVGGElement, Vehicle> = this.mapVehiclesLayer.selectAll('svg')
       .data(this.vehicles, item => item.id);

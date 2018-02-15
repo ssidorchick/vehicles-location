@@ -7,7 +7,7 @@ export enum Types {
   START_VEHICLES_AUTOUPDATE = '[App] Start vehicles autoupdate',
   STOP_VEHICLES_AUTOUPDATE =  '[App] Stop vehicles autoupdate',
   GET_VEHICLES =              '[App] Get vehicles location',
-  GET_VEHICLES_SUCCESS =      '[App] Get Vehicles location success'
+  GET_VEHICLES_SUCCESS =      '[App] Get Vehicles location success',
 }
 
 export class EnableRoutesAction implements Action {

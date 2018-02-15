@@ -48,8 +48,8 @@ import { AppComponent } from './app.component';
   ],
   declarations: [
     ...COMPONENTS,
-    AppComponent
+    AppComponent,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

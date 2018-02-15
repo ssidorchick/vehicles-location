@@ -6,9 +6,9 @@ import { State } from './app.reducers';
 export const getAppState = createFeatureSelector<State>('app');
 export const getEnabledRoutes = createSelector(
   getAppState,
-  (state) => state.routes,
+  (state) => state.routes
 );
 export const getVehicles = createSelector(
   getAppState,
-  (state) => state.vehicles,
+  (state) => state.vehicles
 );

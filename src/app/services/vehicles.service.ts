@@ -37,7 +37,7 @@ export class VehiclesService {
             lng: +item.lon,
           },
         }));
-      }),
+      })
     );
   }
 }

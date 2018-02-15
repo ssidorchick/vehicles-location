@@ -18,7 +18,7 @@ export class AppEffects {
   vehiclesAutoupdate$ = this.actions$.pipe(
     ofType(
       actions.Types.START_VEHICLES_AUTOUPDATE,
-      actions.Types.STOP_VEHICLES_AUTOUPDATE,
+      actions.Types.STOP_VEHICLES_AUTOUPDATE
     ),
     switchMap(action => {
       if (action.type === actions.Types.START_VEHICLES_AUTOUPDATE) {
@@ -28,14 +28,14 @@ export class AppEffects {
         );
       }
       return empty();
-    }),
+    })
   );
 
   @Effect()
   getVehicles$ = this.actions$.pipe(
     ofType(
       actions.Types.GET_VEHICLES,
-      actions.Types.ENABLE_ROUTES,
+      actions.Types.ENABLE_ROUTES
     ),
     withLatestFrom(this.store.select(selectors.getEnabledRoutes)),
     switchMap(([, routes]) => this.vehiclesService.get(routes)),

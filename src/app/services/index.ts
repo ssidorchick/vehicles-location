@@ -1,7 +1,7 @@
 import { VehiclesService } from './vehicles.service';
 
 export const SERVICES = [
-  VehiclesService
+  VehiclesService,
 ];
 
 export {

@@ -10,7 +10,7 @@ export interface State {
 
 export const initialState: State = {
   routes,
-  vehicles: []
+  vehicles: [],
 };
 
 export function reducer(state: State = initialState, action: actions.Actions) {
