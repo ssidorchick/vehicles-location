@@ -2,7 +2,7 @@ export const routeLayers = [
   'arteries',
   'freeways',
   'neighborhoods',
-  // 'streets'
+  'streets'
 ];
 
 export const routeLayerUrls = routeLayers.map(layer => `/assets/google-map-layers/${layer}.json`);
