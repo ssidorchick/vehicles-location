@@ -18,13 +18,12 @@ export class VehiclesService {
       return of([]);
     }
 
-    const  timestamp = +new Date() - 60000;
     const requests = routes.map(route => {
       const params = new HttpParams()
         .set('command', 'vehicleLocations')
         .set('a', 'sf-muni')
         .set('r', route)
-        .set('t', '' + timestamp);
+        .set('t', '0');
       return this.http.get<any>(this.baseUrl, {params});
     });
     return forkJoin(requests).pipe(
