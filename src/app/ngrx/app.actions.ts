@@ -16,19 +16,19 @@ export class EnableRoutesAction implements Action {
   constructor(public routes: string[]) { }
 }
 
-export class StartVehiclesAutoupdate implements Action {
+export class StartVehiclesAutoupdateAction implements Action {
   readonly type = Types.START_VEHICLES_AUTOUPDATE;
 }
 
-export class StopVehiclesAutoupdate implements Action {
+export class StopVehiclesAutoupdateAction implements Action {
   readonly type = Types.STOP_VEHICLES_AUTOUPDATE;
 }
 
-export class GetVehicles implements Action {
+export class GetVehiclesAction implements Action {
   readonly type = Types.GET_VEHICLES;
 }
 
-export class GetVehiclesSuccess implements Action {
+export class GetVehiclesSuccessAction implements Action {
   readonly type = Types.GET_VEHICLES_SUCCESS;
 
   constructor(public vehicles: Vehicle[]) { }
@@ -36,5 +36,7 @@ export class GetVehiclesSuccess implements Action {
 
 export type Actions
   = EnableRoutesAction
-  | GetVehicles
-  | GetVehiclesSuccess;
+  | StartVehiclesAutoupdateAction
+  | StopVehiclesAutoupdateAction
+  | GetVehiclesAction
+  | GetVehiclesSuccessAction;

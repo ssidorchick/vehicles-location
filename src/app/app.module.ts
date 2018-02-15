@@ -15,6 +15,7 @@ import {
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { environment } from '../environments/environment';
+import { CustomRouterStateSerializer } from './common/ngrx';
 import { reducers, metaReducers, AppEffects } from './ngrx';
 import { SERVICES } from './services';
 import { COMPONENTS } from './components';
@@ -41,7 +42,10 @@ import { AppComponent } from './app.component';
     }),
     EffectsModule.forRoot([AppEffects]),
   ],
-  providers: [...SERVICES],
+  providers: [
+    ...SERVICES,
+    {provide: RouterStateSerializer, useClass: CustomRouterStateSerializer},
+  ],
   declarations: [
     ...COMPONENTS,
     AppComponent

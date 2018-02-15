@@ -8,7 +8,7 @@ export const getEnabledRoutes = createSelector(
   getAppState,
   (state) => state.routes,
 );
-export const getVehicleLocations = createSelector(
+export const getVehicles = createSelector(
   getAppState,
   (state) => state.vehicles,
 );

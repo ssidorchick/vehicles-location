@@ -24,7 +24,7 @@ export class AppEffects {
       if (action.type === actions.Types.START_VEHICLES_AUTOUPDATE) {
         return interval(15000).pipe(
           startWith(0),
-          map(() => new actions.GetVehicles())
+          map(() => new actions.GetVehiclesAction())
         );
       }
       return empty();
@@ -32,14 +32,14 @@ export class AppEffects {
   );
 
   @Effect()
-  getVehiclesLocation$ = this.actions$.pipe(
+  getVehicles$ = this.actions$.pipe(
     ofType(
       actions.Types.GET_VEHICLES,
       actions.Types.ENABLE_ROUTES,
     ),
     withLatestFrom(this.store.select(selectors.getEnabledRoutes)),
     switchMap(([, routes]) => this.vehiclesService.get(routes)),
-    map(vehicles => new actions.GetVehiclesSuccess(vehicles))
+    map(vehicles => new actions.GetVehiclesSuccessAction(vehicles))
   );
 
   constructor(private actions$: Actions, private store: Store<State>,

@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { map } from 'rxjs/operators';
 
-import { Marker } from './components/google-map';
 import { routeLayerUrls, routes, routeColors, Vehicle } from './entities';
 import { State, actions, selectors } from './ngrx';
 
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   routeLayerUrls = routeLayerUrls;
   routes = routes;
   routeColors = routeColors;
-  markers$: Observable<Marker[]>;
+  vehicles$: Observable<Vehicle[]>;
   routesForm: FormGroup;
 
   constructor(private store: Store<State>, private fb: FormBuilder) {
@@ -30,24 +30,17 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.markers$ = this.store.select(selectors.getVehicleLocations).pipe(
-      map(vehicles => vehicles.map(vehicle => ({
-        id: vehicle.id,
-        location: vehicle.location,
-        group: vehicle.route,
-        text: `${vehicle.route}: ${vehicle.id}`,
-      }))),
-    );
+    this.vehicles$ = this.store.select(selectors.getVehicles);
 
     this.routesForm.valueChanges.subscribe(changes => {
       const {enabledRoutes} = changes;
       this.store.dispatch(new actions.EnableRoutesAction(enabledRoutes));
     });
 
-    this.store.dispatch(new actions.StartVehiclesAutoupdate());
+    this.store.dispatch(new actions.StartVehiclesAutoupdateAction());
   }
 
   ngOnDestroy() {
-    this.store.dispatch(new actions.StopVehiclesAutoupdate());
+    this.store.dispatch(new actions.StopVehiclesAutoupdateAction());
   }
 }
