@@ -8,6 +8,10 @@
   },
   "exclude": [
     "test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/*.mock.ts",
+    "**/*.spec.ts",
+    "**/testing.ts",
+    "**/testing/**.*"
   ]
 }
