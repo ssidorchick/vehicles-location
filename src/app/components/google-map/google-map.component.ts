@@ -15,12 +15,13 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   @Input() lng: number;
   @Input() layerUrls;
   @Input() items;
+  @Input() itemColors;
   @ViewChild('map') private mapElement;
   private map;
   private isMapInitialized = false;
   private mapOverlay;
   private mapItemsLayer;
-  private itemsUpdated = new Subject();
+  private itemsUpdated = new Subject<boolean>();
   private itemsUpdatedSubscription;
 
   ngOnInit() {
@@ -31,13 +32,13 @@ export class GoogleMapComponent implements OnInit, OnChanges {
 
     this.layerUrls.map(url => this.map.data.loadGeoJson(url));
 
-    this.itemsUpdatedSubscription = this.itemsUpdated.subscribe(() => this.renderItems());
+    this.itemsUpdatedSubscription = this.itemsUpdated.subscribe(transition => this.renderItems(transition));
     this.mapOverlay = new google.maps.OverlayView();
     this.mapOverlay.onAdd = () => {
       this.mapItemsLayer = d3.select(this.mapOverlay.getPanes().overlayLayer).append('div')
         .attr('class', 'vehicles');
 
-      this.mapOverlay.draw = () => this.itemsUpdated.next();
+      this.mapOverlay.draw = () => this.itemsUpdated.next(false);
       this.isMapInitialized = true;
     };
     this.mapOverlay.setMap(this.map);
@@ -49,11 +50,11 @@ export class GoogleMapComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.isMapInitialized) {
-      this.itemsUpdated.next();
+      this.itemsUpdated.next(true);
     }
   }
 
-  private renderItems() {
+  private renderItems(transition = false) {
     if (!this.items) {
       return;
     }
@@ -64,12 +65,12 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     const textSize = '.31em';
     const padding = 10;
 
-    const transform = (animate = false) => function transform(d) {
+    const transform = (transition = false) => function transform(d) {
       const {location} = d;
       d = new google.maps.LatLng(location.lat, location.lng);
       d = projection.fromLatLngToDivPixel(d);
       let selection: any = d3.select(this);
-      if (animate) {
+      if (transition) {
         selection = selection
           .transition()
           .duration(500)
@@ -91,16 +92,18 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     markerEnter.append('circle')
       .attr('r', radius)
       .attr('cx', padding)
-      .attr('cy', padding);
+      .attr('cy', padding)
+      .attr('fill', d => this.itemColors[d.route]);
 
     markerEnter.append('text')
       .attr('x', padding + textXOffset)
       .attr('y', padding)
       .attr('dy', textSize)
+      .attr('fill', d => this.itemColors[d.route])
       .text(d => `${d.route}: ${d.id}`);
 
     marker
-      .each(transform(true));
+      .each(transform(transition));
 
     markerEnter.each(transform());
   }

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { routeLayerUrls, routes, Vehicle } from './entities';
+import { routeLayerUrls, routes, routeColors, Vehicle } from './entities';
 import { State, actions, selectors } from './ngrx';
 
 @Component({
@@ -17,6 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
   mapLng = -122.431297;
   routeLayerUrls = routeLayerUrls;
   routes = routes;
+  routeColors = routeColors;
   vehicles$: Observable<Vehicle[]>;
   routesForm: FormGroup;
 

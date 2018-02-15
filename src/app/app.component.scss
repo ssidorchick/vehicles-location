@@ -13,3 +13,17 @@
   border-radius: 10px;
   z-index: 100;
 }
+
+/deep/ mat-option {
+  .mat-option-text {
+    display: inline-flex;
+    align-items: center;
+
+    .option-color {
+      flex: 1;
+      display: block;
+      margin-left: 20px;
+      height: 25px;
+    }
+  }
+}

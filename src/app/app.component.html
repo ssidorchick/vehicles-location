@@ -1,7 +1,10 @@
 <form [formGroup]="routesForm" novalidate class="routes-form">
   <mat-form-field>
     <mat-select placeholder="Routes" formControlName="enabledRoutes" multiple>
-      <mat-option *ngFor="let route of routes" [value]="route">{{route}}</mat-option>
+      <mat-option *ngFor="let route of routes" [value]="route">
+        <span>{{route}}</span>
+        <span class="option-color" [ngStyle]="{background: routeColors[route]}"></span>
+      </mat-option>
     </mat-select>
   </mat-form-field>
 </form>
@@ -10,5 +13,6 @@
   [lat]="mapLat"
   [lng]="mapLng"
   [layerUrls]="routeLayerUrls"
+  [itemColors]="routeColors"
   [items]="vehicles$ | async">
 </app-google-map>
