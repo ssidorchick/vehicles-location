@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
+import { Marker } from './components/google-map';
 import { routeLayerUrls, routes, routeColors, Vehicle } from './entities';
 import { State, actions, selectors } from './ngrx';
 
@@ -18,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   routeLayerUrls = routeLayerUrls;
   routes = routes;
   routeColors = routeColors;
-  vehicles$: Observable<Vehicle[]>;
+  markers$: Observable<Marker[]>;
   routesForm: FormGroup;
 
   constructor(private store: Store<State>, private fb: FormBuilder) {
@@ -28,7 +30,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.vehicles$ = this.store.select(selectors.getVehicleLocations);
+    this.markers$ = this.store.select(selectors.getVehicleLocations).pipe(
+      map(vehicles => vehicles.map(vehicle => ({
+        id: vehicle.id,
+        location: vehicle.location,
+        group: vehicle.route,
+        text: `${vehicle.route}: ${vehicle.id}`,
+      }))),
+    );
 
     this.routesForm.valueChanges.subscribe(changes => {
       const {enabledRoutes} = changes;

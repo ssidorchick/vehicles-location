@@ -2,6 +2,8 @@ import { Component, OnInit, OnChanges, Input, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import * as d3 from 'd3';
 
+import { Marker } from './marker';
+
 declare var google: any;
 
 @Component({
@@ -13,16 +15,16 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   @Input() zoom: number;
   @Input() lat: number;
   @Input() lng: number;
-  @Input() layerUrls;
-  @Input() items;
-  @Input() itemColors;
+  @Input() layerUrls: string[];
+  @Input() markers: Marker[];
+  @Input() markerColors: {[key: string]: string};
   @ViewChild('map') private mapElement;
   private map;
   private isMapInitialized = false;
   private mapOverlay;
-  private mapItemsLayer;
-  private itemsUpdated = new Subject<boolean>();
-  private itemsUpdatedSubscription;
+  private mapMarkersLayer;
+  private markersUpdated = new Subject<boolean>();
+  private markersUpdatedSubscription;
 
   ngOnInit() {
     this.map = new google.maps.Map(this.mapElement.nativeElement, {
@@ -32,30 +34,30 @@ export class GoogleMapComponent implements OnInit, OnChanges {
 
     this.layerUrls.map(url => this.map.data.loadGeoJson(url));
 
-    this.itemsUpdatedSubscription = this.itemsUpdated.subscribe(transition => this.renderItems(transition));
+    this.markersUpdatedSubscription = this.markersUpdated.subscribe(transition => this.renderItems(transition));
     this.mapOverlay = new google.maps.OverlayView();
     this.mapOverlay.onAdd = () => {
-      this.mapItemsLayer = d3.select(this.mapOverlay.getPanes().overlayLayer).append('div')
+      this.mapMarkersLayer = d3.select(this.mapOverlay.getPanes().overlayLayer).append('div')
         .attr('class', 'vehicles');
 
-      this.mapOverlay.draw = () => this.itemsUpdated.next(false);
+      this.mapOverlay.draw = () => this.markersUpdated.next(false);
       this.isMapInitialized = true;
     };
     this.mapOverlay.setMap(this.map);
   }
 
   ngOnDestroy() {
-    this.itemsUpdatedSubscription.unsubscribe();
+    this.markersUpdatedSubscription.unsubscribe();
   }
 
   ngOnChanges() {
     if (this.isMapInitialized) {
-      this.itemsUpdated.next(true);
+      this.markersUpdated.next(true);
     }
   }
 
   private renderItems(transition = false) {
-    if (!this.items) {
+    if (!this.markers) {
       return;
     }
 
@@ -80,8 +82,8 @@ export class GoogleMapComponent implements OnInit, OnChanges {
         .style('top', (d.y - padding) + 'px');
     }
 
-    const marker = this.mapItemsLayer.selectAll('svg')
-      .data(this.items, item => item.id);
+    const marker: d3.Selection<SVGGElement, Marker, SVGGElement, Marker> = this.mapMarkersLayer.selectAll('svg')
+      .data(this.markers, item => item.id);
 
     marker.exit().remove();
 
@@ -93,14 +95,14 @@ export class GoogleMapComponent implements OnInit, OnChanges {
       .attr('r', radius)
       .attr('cx', padding)
       .attr('cy', padding)
-      .attr('fill', d => this.itemColors[d.route]);
+      .attr('fill', d => this.markerColors[d.group]);
 
     markerEnter.append('text')
       .attr('x', padding + textXOffset)
       .attr('y', padding)
       .attr('dy', textSize)
-      .attr('fill', d => this.itemColors[d.route])
-      .text(d => `${d.route}: ${d.id}`);
+      .attr('fill', d => this.markerColors[d.group])
+      .text(d => d.text);
 
     marker
       .each(transform(transition));

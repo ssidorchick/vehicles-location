@@ -1,4 +1,4 @@
-import { GoogleMapComponent } from './google-map/google-map.component';
+import { GoogleMapComponent } from './google-map';
 
 export const COMPONENTS = [
   GoogleMapComponent,

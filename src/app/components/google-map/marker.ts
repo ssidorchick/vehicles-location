@@ -1,8 +1,9 @@
-export interface Vehicle {
+export interface Marker {
   id: string;
   location: {
     lat: number;
     lng: number;
   };
-  route: string;
+  group: string;
+  text: string;
 }
