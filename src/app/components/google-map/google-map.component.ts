@@ -97,7 +97,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
       .attr('x', padding + textXOffset)
       .attr('y', padding)
       .attr('dy', textSize)
-      .text(d => d.id);
+      .text(d => `${d.route}: ${d.id}`);
 
     marker
       .each(transform(true));

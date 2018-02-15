@@ -1,23 +1,28 @@
-import { Vehicle } from '../models';
+import { Vehicle } from '../entities';
 import * as actions from './app.actions';
 
+import { routes } from '../entities';
+
 export interface State {
-  readonly routeLayers: string[];
+  readonly routes: string[];
   readonly vehicles: Vehicle[];
 }
 
 export const initialState: State = {
-  routeLayers: [
-    'arteries',
-    'freeways',
-    'neighborhoods',
-    // 'streets'
-  ],
+  routes,
   vehicles: []
 };
 
 export function reducer(state: State = initialState, action: actions.Actions) {
   switch (action.type) {
+    case actions.Types.ENABLE_ROUTES: {
+      const {routes} = action;
+      return {
+        ...state,
+        routes,
+      };
+    }
+
     case actions.Types.GET_VEHICLES_SUCCESS: {
       const {vehicles} = action;
       return {

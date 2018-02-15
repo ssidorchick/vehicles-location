@@ -1,7 +1,14 @@
+<form [formGroup]="routesForm" novalidate class="routes-form">
+  <mat-form-field>
+    <mat-select placeholder="Routes" formControlName="enabledRoutes" multiple>
+      <mat-option *ngFor="let route of routes" [value]="route">{{route}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
 <app-google-map
   [zoom]="mapZoom"
   [lat]="mapLat"
   [lng]="mapLng"
-  [layerUrls]="routeLayerUrls$ | async"
+  [layerUrls]="routeLayerUrls"
   [items]="vehicles$ | async">
 </app-google-map>

@@ -1,12 +1,19 @@
 import { Action } from '@ngrx/store';
 
-import { Vehicle } from '../models';
+import { Vehicle } from '../entities';
 
 export enum Types {
+  ENABLE_ROUTES =             '[App] Enable routes',
   START_VEHICLES_AUTOUPDATE = '[App] Start vehicles autoupdate',
   STOP_VEHICLES_AUTOUPDATE =  '[App] Stop vehicles autoupdate',
   GET_VEHICLES =              '[App] Get vehicles location',
   GET_VEHICLES_SUCCESS =      '[App] Get Vehicles location success'
+}
+
+export class EnableRoutesAction implements Action {
+  readonly type = Types.ENABLE_ROUTES;
+
+  constructor(public routes: string[]) { }
 }
 
 export class StartVehiclesAutoupdate implements Action {
@@ -28,5 +35,6 @@ export class GetVehiclesSuccess implements Action {
 }
 
 export type Actions
-  = GetVehicles
+  = EnableRoutesAction
+  | GetVehicles
   | GetVehiclesSuccess;

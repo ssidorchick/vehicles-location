@@ -1,14 +1,14 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 
-import { Vehicle } from '../models';
+import { Vehicle } from '../entities';
 import { State } from './app.reducers';
 
 export const getAppState = createFeatureSelector<State>('app');
-export const getRouteLayerUrls = createSelector(
+export const getEnabledRoutes = createSelector(
   getAppState,
-  (state) => state.routeLayers.map(layer => `/assets/google-map-layers/${layer}.json`)
+  (state) => state.routes,
 );
 export const getVehicleLocations = createSelector(
   getAppState,
-  (state) => state.vehicles
+  (state) => state.vehicles,
 );

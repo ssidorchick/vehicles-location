@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operators';
 
-import { Vehicle } from '../models';
+import { Vehicle } from '../entities';
 
 @Injectable()
 export class VehiclesService {
@@ -11,19 +13,32 @@ export class VehiclesService {
 
   constructor(private http: HttpClient) { }
 
-  get(): Observable<Vehicle[]> {
-    const timestamp = +new Date() - 60000;
-    return this.http.get<any>(`${this.baseUrl}?command=vehicleLocations&a=sf-muni&r=N&t=${timestamp}`).pipe(
-      map(response => {
-        const {vehicle} = response;
-        return vehicle.map(item => ({
+  get(routes: string[]): Observable<Vehicle[]> {
+    if (routes.length === 0) {
+      return of([]);
+    }
+
+    const  timestamp = +new Date() - 60000;
+    const requests = routes.map(route => {
+      const params = new HttpParams()
+        .set('command', 'vehicleLocations')
+        .set('a', 'sf-muni')
+        .set('r', route)
+        .set('t', '' + timestamp);
+      return this.http.get<any>(this.baseUrl, {params});
+    });
+    return forkJoin(requests).pipe(
+      map(responses => {
+        const vehicles = responses.reduce((memo, item) => memo.concat(item.vehicle), []);
+        return vehicles.map(item => ({
           id: item.id,
+          route: item.routeTag,
           location: {
             lat: +item.lat,
             lng: +item.lon,
           },
         }));
-      })
+      }),
     );
   }
 }
